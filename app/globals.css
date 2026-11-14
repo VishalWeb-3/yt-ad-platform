@@ -410,6 +410,7 @@ a {
 .photo {
   height: 412px;
   overflow: hidden;
+  background: var(--grey);
 }
 .photo span {
   display: block;

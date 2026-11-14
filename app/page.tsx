@@ -8,6 +8,7 @@ import {
   clients,
   people,
   services,
+  teamTags,
   testimonials,
   ticker,
   works,
@@ -109,6 +110,40 @@ export default function Home() {
                 </textPath>
               </text>
             </svg>
+          </div>
+
+          <div className="team">
+            <div className="polaroid">
+              {/* Empty photo area: the frame stays, the picture is intentionally left out. */}
+              <div className="photo" />
+              {teamTags.map((t) => (
+                <div
+                  key={t.name}
+                  className={`tag tag-${t.dir}`}
+                  style={{ left: t.left, top: t.top }}
+                >
+                  <span className="p">{t.name}</span>
+                  <i />
+                </div>
+              ))}
+              <div className="polaroid-icons" aria-hidden>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path transform="translate(4.75 5.75)" d="M7.245 1.483C5.796-.14 3.378-.577 1.562.91-.254 2.396-.51 4.881.917 6.639L7.245 12.5l6.329-5.861C15 4.881 14.775 2.38 12.928.91 11.081-.561 8.695-.14 7.245 1.483Z" />
+                </svg>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path transform="translate(4.75 5.75)" d="M7.25 12.5c3.5 0 7.25-1.75 7.25-6.25S10.75 0 7.25 0 0 1.75 0 6.25c0 1.03.196 1.916.541 2.669.215.47.336.988.241 1.496l-.263 1.399c-.129.691.476 1.296 1.168 1.167l3.207-.602c.252-.047.511-.043.764-.003.527.084 1.062.124 1.592.124Z" />
+                  <path d="M9 12h.01M12 12h.01M15 12h.01" strokeWidth="2" />
+                </svg>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path transform="translate(8.75 6.75)" d="M8.5 8.5V0H0" />
+                  <path transform="translate(6.75 7)" d="M10.25 0 0 10.25" />
+                </svg>
+              </div>
+              <div className="polaroid-caption">
+                <span className="h6">WEB3TASK:</span>
+                <span className="p">Meet the campaign team!</span>
+              </div>
+            </div>
           </div>
 
           <div className="people">
