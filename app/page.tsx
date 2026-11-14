@@ -1,315 +1,303 @@
-import Nav from "./components/Nav";
-import Motion from "./components/Motion";
-import Footer from "./components/Footer";
-import ContactForm from "./components/ContactForm";
-import { Arrow, Check, Words } from "./components/ui";
-import {
-  avatarRows,
-  clients,
-  people,
-  services,
-  teamTags,
-  testimonials,
-  ticker,
-  works,
-} from "./data";
+import { Art, DashboardArt } from "./components/art";
+import { Btn, LinkCard, SecHead, ServiceCard, Shell, TextLink } from "./components/ui";
+import { Accordion, FormatCompare, PlannerPreview, ReachPicker } from "./components/widgets";
+import { QuoteForm } from "./components/Forms";
+import { FogAbout, FogBuiltFor, FogCta, FogExpect, FogHero, FogServices } from "./components/fog";
+import { coreServices, services } from "./content/services";
+import { faqTopics, industries, metricDefs, solutions, strategy, why, workflow } from "./content/site";
 
-const RIBBON = "We plan. We target. We launch. Then we report on every view.  ";
-
+/**
+ * Home page. The FOG clone's sections are the base (hero strip, about, pinned accordion,
+ * "what to expect", "built for", pinned call to action). The sections the PRD asks for
+ * (section 11) are added between them in the same visual language. The trust module and
+ * case-study cards are left out until verified material exists.
+ */
 export default function Home() {
+  const segmentCards = [
+    ...solutions.map((s) => ({ ...s, href: `/solutions/${s.slug}` })),
+    ...industries.slice(0, 2).map((s) => ({ ...s, href: `/industries/${s.slug}` })),
+  ];
   return (
-    <>
-      <Nav />
-      <main>
-        {/* ───────────── Hero + Selected work ───────────── */}
-        <section className="hero" id="hero">
-          <div className="hero-track">
-            <div className="strip">
-              <div className="strip-row">
-                {works.map((w) => (
-                  <a
-                    key={w.img}
-                    className="card"
-                    href={w.slug ? `/case-study/${w.slug}` : "/case-study"}
-                    data-cursor="View Guide"
-                    aria-label={`Guide: ${w.slug || "all formats"}`}
-                  >
-                    <span
-                      className="card-img"
-                      style={{ backgroundImage: `url(${w.img})` }}
-                    />
-                  </a>
-                ))}
-              </div>
-            </div>
+    <Shell>
+      <FogHero />
+      {/* 4 · Core services */}
+      <section className="sec">
+        <div className="wrap">
+          <SecHead
+            eyebrow="Core services"
+            title="Six ways to put a video in front of people"
+            lead="Each service is a paid advertising method on YouTube. Pick by where you want the ad to appear and where your audience is."
+            action={<TextLink href="/services">All {services.length} services</TextLink>}
+          />
+          <div className="grid g3" data-stagger>
+            {coreServices.map((s, i) => (
+              <ServiceCard key={s.slug} s={s} n={i + 1} />
+            ))}
           </div>
+        </div>
+      </section>
 
-          <div className="hero-text">
-            <div className="hero-body">
-              <p className="p" data-blur>
-                We help creators and businesses plan, launch, and manage YouTube ad campaigns, from the first brief to the final report.
-              </p>
-              <p className="p" data-blur>
-                Targeting gets your video seen. Reporting shows you what happened.
-              </p>
-            </div>
-            <h1 className="h1" data-words>
-              <Words text="Get Your Video Seen." />
-            </h1>
-          </div>
+      <FogAbout />
 
-          <div className="work" id="work">
-            <div className="work-top">
-              <h2 className="h2" data-words>
-                <Words text="Ad Formats:" />
-              </h2>
-              <p className="p just" data-blur>
-                From skippable in-stream to Shorts, each campaign starts with a different goal. Our role is to match the format, the audience, and the budget to it.
-              </p>
-            </div>
-            <a className="link-xl line-link h3" href="/case-study" data-blur>
-              See All Formats <Arrow size={40} />
-            </a>
+      {/* 5 · Global reach */}
+      <section className="sec">
+        <div className="wrap split">
+          <div className="stack lg">
+            <SecHead
+              eyebrow="Global reach"
+              title="Choose the markets. See the list."
+              lead="Search for the countries you want. Worldwide campaigns resolve to an explicit list of supported markets, and your exclusions always win."
+            />
+            <ReachPicker />
           </div>
-          <div className="hero-tail" />
-        </section>
+          <div className="page-hero-art" data-zoom data-tilt>
+            <Art kind="globe" />
+          </div>
+        </div>
+      </section>
 
-        {/* ───────────── About ───────────── */}
-        <section className="about" id="about">
-          <div className="about-head">
-            <h2 className="h2" data-words>
-              <Words text="Clear plans. Clear prices." />
-            </h2>
-            <h3 className="h3" data-blur>
-              Transparent, by design.
-            </h3>
+      {/* 6 · Format comparison */}
+      <section className="sec">
+        <div className="wrap">
+          <SecHead
+            eyebrow="Format comparison"
+            title="Same platform, different jobs"
+            lead="Where each format appears, what it is for, what it needs from you and which family of metric it reports. Display impressions are never classed as views."
+          />
+          <div data-rise>
+            <FormatCompare />
           </div>
-          <div className="about-body about-body-1">
-            <p className="p just" data-blur>
-              We work with creators, channels, brands, and businesses who want their videos in front of the right viewers.
-            </p>
-          </div>
-          <div className="about-body about-body-2">
-            <p className="p just" data-blur>
-              No hidden fees. No vague packages. No guessing where your budget went. Just clear pricing, defined audiences, and reporting you can read.
-            </p>
-          </div>
+        </div>
+      </section>
 
-          <div className="ribbon" aria-label={RIBBON.trim()}>
-            <svg viewBox="0 0 1440 400" preserveAspectRatio="xMidYMid slice" aria-hidden>
-              <defs>
-                <path id="ri-path" d="M 0 200 C 480 200, 960 200, 1440 200" fill="none" />
-              </defs>
-              <path
-                className="ribbon-band"
-                d="M 0 139.4 C 480 139.4, 960 139.4, 1440 139.4 L 1440 221.4 C 960 221.4, 480 221.4, 0 221.4 Z"
-              />
-              <text className="ribbon-text">
-                <textPath href="#ri-path" startOffset="0">
-                  {RIBBON.repeat(8)}
-                </textPath>
-              </text>
-            </svg>
-          </div>
+      <FogServices />
 
-          <div className="team">
-            <div className="polaroid">
-              {/* Empty photo area: the frame stays, the picture is intentionally left out. */}
-              <div className="photo" />
-              {teamTags.map((t) => (
-                <div
-                  key={t.name}
-                  className={`tag tag-${t.dir}`}
-                  style={{ left: t.left, top: t.top }}
-                >
-                  <span className="p">{t.name}</span>
-                  <i />
+      {/* 7 · Why choose us */}
+      <section className="sec">
+        <div className="wrap">
+          <SecHead eyebrow="Why choose us" title="Things you can check, not things we claim" lead="We would rather describe a process you can observe than say we are the best at it." />
+          <div className="grid g3" data-stagger>
+            {why.map((w, i) => (
+              <article className="card pad-lg" key={w.title}>
+                <span className="num">{String(i + 1).padStart(2, "0")}</span>
+                <h3 className="h3">{w.title}</h3>
+                <p className="p">{w.text}</p>
+              </article>
+            ))}
+            <article className="card pad-lg" style={{ background: "#3f00ff", color: "#f7f7f7", borderColor: "#3f00ff" }}>
+              <span className="num" style={{ color: "#c7e4ff" }}>Not on the list</span>
+              <h3 className="h3">What we will not promise</h3>
+              <p style={{ color: "#f7f7f7" }}>Guaranteed subscribers, engagement, sales, live viewers or advertising platform approval. Nobody can honestly sell those.</p>
+              <a className="more" href="/advertising-disclosures" style={{ color: "#f7f7f7" }}>
+                Advertising disclosures
+              </a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* 8 · Workflow */}
+      <section className="sec alt">
+        <div className="wrap">
+          <SecHead
+            eyebrow="Workflow"
+            title="Seven stages, each with an owner"
+            lead="What you do and what we do at every stage, from choosing a service to reading the report."
+            action={<TextLink href="/how-it-works">How it works in detail</TextLink>}
+          />
+          <div className="flow">
+            <span className="flow-line" aria-hidden>
+              <i />
+            </span>
+            <ol>
+            {workflow.map((w) => (
+              <li className="flow-step" key={w.title}>
+                <h3 className="h3">{w.title}</h3>
+                <dl>
+                  <dt>You</dt>
+                  <dd>{w.you}</dd>
+                </dl>
+                <dl>
+                  <dt>We</dt>
+                  <dd>{w.we}</dd>
+                </dl>
+              </li>
+            ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      {/* 9 · Planner preview */}
+      <section className="sec">
+        <div className="wrap split top">
+          <div className="stack lg sticky">
+            <SecHead
+              eyebrow="Campaign planner"
+              title="Start a brief in under a minute"
+              lead="Pick a service, a country and a media budget. The planner takes it from there in ten short steps and saves your progress as you go."
+            />
+            <ul className="ticks" data-stagger>
+              <li>Your choices carry over into the planner</li>
+              <li>Nothing is charged when you submit a brief</li>
+              <li>Quote-only services lead to a custom estimate request</li>
+            </ul>
+          </div>
+          <div data-rise>
+            <PlannerPreview />
+          </div>
+        </div>
+      </section>
+
+      {/* 10 · Industry solutions */}
+      <section className="sec">
+        <div className="wrap">
+          <SecHead
+            eyebrow="Solutions"
+            title="Built around who you are"
+            lead="Creators, artists, brands, agencies, online shops, startups and enterprise teams each come with different problems. Start from yours."
+            action={<TextLink href="/solutions">All solutions</TextLink>}
+          />
+          <div className="grid g3" data-stagger>
+            {segmentCards.map((s) => (
+              <LinkCard key={s.slug} href={s.href} art={s.art} title={s.name} text={s.card} more="See the solution" />
+            ))}
+            <LinkCard href="/enterprise" art="enterprise" title="Enterprise" text="Multi-country programmes with custom terms, procurement support and a named contact." more="Enterprise campaigns" />
+          </div>
+        </div>
+      </section>
+
+      <FogExpect />
+
+      {/* 11 · Analytics preview */}
+      <section className="sec">
+        <div className="wrap split">
+          <div data-zoom>
+            <DashboardArt />
+          </div>
+          <div className="stack lg">
+            <SecHead
+              eyebrow="Reporting"
+              title="Numbers with their definitions attached"
+              lead="This is an illustrative dashboard with sample data, shown so you know what a report covers. Your real report states its date range, time zone, currency and how fresh the data is."
+            />
+            <dl className="defs" data-stagger>
+              {metricDefs.map(([k, v]) => (
+                <div key={k}>
+                  <dt>{k}</dt>
+                  <dd>{v}</dd>
                 </div>
               ))}
-              <div className="polaroid-icons" aria-hidden>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path transform="translate(4.75 5.75)" d="M7.245 1.483C5.796-.14 3.378-.577 1.562.91-.254 2.396-.51 4.881.917 6.639L7.245 12.5l6.329-5.861C15 4.881 14.775 2.38 12.928.91 11.081-.561 8.695-.14 7.245 1.483Z" />
-                </svg>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path transform="translate(4.75 5.75)" d="M7.25 12.5c3.5 0 7.25-1.75 7.25-6.25S10.75 0 7.25 0 0 1.75 0 6.25c0 1.03.196 1.916.541 2.669.215.47.336.988.241 1.496l-.263 1.399c-.129.691.476 1.296 1.168 1.167l3.207-.602c.252-.047.511-.043.764-.003.527.084 1.062.124 1.592.124Z" />
-                  <path d="M9 12h.01M12 12h.01M15 12h.01" strokeWidth="2" />
-                </svg>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path transform="translate(8.75 6.75)" d="M8.5 8.5V0H0" />
-                  <path transform="translate(6.75 7)" d="M10.25 0 0 10.25" />
-                </svg>
-              </div>
-              <div className="polaroid-caption">
-                <span className="h6">WEB3TASK:</span>
-                <span className="p">Meet the campaign team!</span>
-              </div>
-            </div>
+            </dl>
+            <TextLink href="/resources/reading-your-report">How to read a report</TextLink>
           </div>
+        </div>
+      </section>
 
-          <div className="people">
-            <h5 className="h5" data-blur>
-              People behind WEB3TASK:
-            </h5>
-            <div className="people-groups">
-              {people.map((group, gi) => (
-                <div className="people-group" key={gi}>
-                  {group.map(([name, role]) => (
-                    <div key={name} data-blur>
-                      <h6 className="h6">{name}</h6>
-                      <p className="p">{role}</p>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ───────────── Services ───────────── */}
-        <section className="services" id="services">
-          <div className="services-sticky">
-            <h2 className="h2" data-words>
-              <Words text="What we do:" />
-            </h2>
-            <div className="services-content">
-              <p className="p just services-left" data-blur>
-                We cover planning, formats, targeting, and reporting, and only set up what your campaign actually needs.
-              </p>
-              <div className="svc-list">
-                {services.map((s, i) => (
-                  <div className={`svc${i === 0 ? " active" : ""}`} key={s.title}>
-                    <div className="svc-img">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={s.img} alt="" loading="lazy" />
-                    </div>
-                    <h4 className="h4">{s.title}</h4>
-                  </div>
+      {/* 12 · Campaign strategy */}
+      <section className="sec">
+        <div className="wrap">
+          <SecHead eyebrow="Campaign strategy" title="Who does what, start to finish" lead="Five stages, with the responsibility for each one stated." />
+          <div className="table-wrap" data-rise>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th scope="col">Stage</th>
+                  <th scope="col">Responsibility</th>
+                  <th scope="col">What happens</th>
+                </tr>
+              </thead>
+              <tbody>
+                {strategy.map((s) => (
+                  <tr key={s.title}>
+                    <th scope="row">{s.title}</th>
+                    <td>
+                      <span className="chip">{s.owner}</span>
+                    </td>
+                    <td>{s.text}</td>
+                  </tr>
                 ))}
-              </div>
-              <div className="svc-texts">
-                {services.map((s, i) => (
-                  <h6 className={`h6 just svc-text${i === 0 ? " active" : ""}`} key={s.title}>
-                    {s.text}
-                  </h6>
-                ))}
-              </div>
-            </div>
+              </tbody>
+            </table>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ───────────── Testimonials ───────────── */}
-        <section className="testimonials">
-          <h2 className="h2" data-words>
-            <Words text="What To Expect:" />
-          </h2>
-          <div className="t-wrap">
-            <div className="t-avatars" aria-hidden>
-              {avatarRows.map((row, ri) => (
-                <div className="t-avatar-row" key={ri}>
-                  {row.map(([name, role, img]) => (
-                    <div className="t-user" key={name}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={img} alt="" loading="lazy" />
-                      <div>
-                        <p className="p">{name}</p>
-                        <p className="tiny">{role}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-            <div className="t-cols">
-              {[0, 1, 2].map((c) => (
-                <div className="t-col" key={c}>
-                  {[testimonials[c], testimonials[c + 3]].map((t) => (
-                    <article className="t-card" key={t.name} data-blur>
-                      <div className="t-author">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={t.img} alt="" loading="lazy" />
-                        <div>
-                          <p className="p">
-                            {t.name} <Check />
-                          </p>
-                          <p className="tiny">{t.role}</p>
-                        </div>
-                      </div>
-                      <h6 className="h6">{t.quote}</h6>
-                    </article>
-                  ))}
-                </div>
-              ))}
+      {/* 15 · Pricing overview */}
+      <section className="sec alt">
+        <div className="wrap split">
+          <div className="stack lg">
+            <SecHead
+              eyebrow="Pricing"
+              title="Three lines, always"
+              lead="Every quote separates the media budget you spend on advertising, our agency fee, and any tax. One currency per order. Quotes are valid for 7 days."
+            />
+            <div className="row">
+              <Btn href="/pricing">See how pricing works</Btn>
+              <TextLink href="/request-quote">Request a custom quote</TextLink>
             </div>
           </div>
-        </section>
-
-        {/* ───────────── Clients ───────────── */}
-        <section className="clients">
-          <div className="clients-inner">
-            <div className="clients-text">
-              <h2 className="h2" data-words>
-                <Words text="Built For:" />
-              </h2>
-              <p className="p" data-blur>
-                We run campaigns for creators and businesses of every size, across many kinds of channels and goals.
-              </p>
+          <div className="panel stack lg" data-rise>
+            <div className="bars" aria-hidden>
+              <span className="m" style={{ flexGrow: 7 }}>Media budget</span>
+              <span className="f" style={{ flexGrow: 2 }}>Agency fee</span>
+              <span className="t" style={{ flexGrow: 1 }}>Tax</span>
             </div>
-            <div className="clients-cols">
-              <div className="clients-grid">
-                {clients.map((col, ci) => (
-                  <div key={ci}>
-                    {col.map((n) => (
-                      <span className="client-line" key={n}>
-                        <span className="h6b client-name">{n}</span>
-                      </span>
-                    ))}
-                  </div>
-                ))}
+            <dl className="defs">
+              <div>
+                <dt>Media budget</dt>
+                <dd>Spent on advertising. You set it.</dd>
               </div>
-              <h3 className="h3 clients-more" data-blur>
-                &amp; Many More
-              </h3>
-            </div>
+              <div>
+                <dt>Agency fee</dt>
+                <dd>Planning, setup, monitoring and reporting. Discounts apply here, never to your media.</dd>
+              </div>
+              <div>
+                <dt>Tax</dt>
+                <dd>Calculated per line for your jurisdiction and shown on its own.</dd>
+              </div>
+            </dl>
+            <p className="help">Proportions in the bar are for illustration. Minimums and fee rates are stated per service in your quote.</p>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ───────────── CTA (pinned) + Footer overlay ───────────── */}
-        <section className="cta" id="contact" data-pin>
-          <div className="ticker" aria-hidden>
-            <div className="ticker-track">
-              {[0, 1, 2, 3].map((r) =>
-                ticker.map((it, i) => (
-                  <div className="ticker-item" key={`${r}-${i}`}>
-                    {it.kind === "shape" ? (
-                      <span
-                        className="shape"
-                        style={{
-                          backgroundImage: `url(${it.img})`,
-                          WebkitMaskImage: `url(${it.mask})`,
-                          maskImage: `url(${it.mask})`,
-                        }}
-                      />
-                    ) : (
-                      <span className={`pill h6 pill-${it.tone}`}>{it.text}</span>
-                    )}
-                  </div>
-                )),
-              )}
+      <FogBuiltFor />
+
+      {/* 16 · FAQ: one question from each of the eight topics */}
+      <section className="sec">
+        <div className="wrap split top">
+          <div className="sticky">
+            <SecHead eyebrow="FAQ" title="Questions people ask first" lead="One from each topic: setup, targeting, budgets, formats, reporting, timelines, payments and cancellation." />
+            <TextLink href="/faq">All questions</TextLink>
+          </div>
+          <div data-rise>
+            <Accordion items={faqTopics.map((t) => ({ id: `faq-${t.key}`, tag: t.title, q: t.items[0][0], a: t.items[0][1] }))} />
+          </div>
+        </div>
+      </section>
+
+      {/* 17 · Enterprise CTA */}
+      <section className="sec alt">
+        <div className="wrap split top">
+          <div className="stack lg sticky">
+            <SecHead
+              eyebrow="Enterprise"
+              title="Large budget or many countries?"
+              lead="Tell us the markets, the budget and how your procurement works. A named contact replies with a custom quotation."
+            />
+            <div className="card-art" data-tilt style={{ margin: 0, maxWidth: 420 }}>
+              <Art kind="enterprise" />
             </div>
+            <TextLink href="/enterprise">Enterprise campaigns</TextLink>
           </div>
-          <div className="cta-head">
-            <h2 className="h1" data-words>
-              <Words text="Got A Video?" />
-            </h2>
-            <p className="h6b" data-words>
-              <Words text="New channel, big launch, small budget — all welcome." />
-            </p>
+          <div className="panel" data-rise>
+            <QuoteForm enterprise />
           </div>
-          <ContactForm />
-        </section>
-        <Footer />
-      </main>
-      <Motion />
-    </>
+        </div>
+      </section>
+
+      <FogCta />
+    </Shell>
   );
 }
